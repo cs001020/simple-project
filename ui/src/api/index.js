@@ -17,7 +17,7 @@
  // 创建axios实例
  const request = axios.create({
      // axios中请求配置有baseURL选项，表示请求URL公共部分
-     baseURL: 'http://localhost:8088/',
+     baseURL: 'http://localhost:80/ssm/',
      // 超时
      timeout: 10000,
      // 设置Content-Type，规定了前后端的交互使用json
