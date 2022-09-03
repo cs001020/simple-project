@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mapper.MenuDao">
+
+    <resultMap type="com.chen.entity.Menu" id="MenuMap">
+        <result property="menuId" column="menu_id" jdbcType="INTEGER"/>
+        <result property="menuName" column="menu_name" jdbcType="VARCHAR"/>
+        <result property="perms" column="perms" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+        <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="component" column="component" jdbcType="VARCHAR"/>
+        <result property="menuType" column="menu_type" jdbcType="VARCHAR"/>
+        <result property="visible" column="visible" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MenuMap">
+        select
+          menu_id, menu_name, perms, parent_id, order_num, path, component, menu_type, visible, icon, create_by, create_time, update_by, update_time
+        from menu
+        where menu_id = #{menuId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MenuMap">
+        select
+          menu_id, menu_name, perms, parent_id, order_num, path, component, menu_type, visible, icon, create_by, create_time, update_by, update_time
+        from menu
+        <where>
+            <if test="menuId != null">
+                and menu_id = #{menuId}
+            </if>
+            <if test="menuName != null and menuName != ''">
+                and menu_name = #{menuName}
+            </if>
+            <if test="perms != null and perms != ''">
+                and perms = #{perms}
+            </if>
+            <if test="parentId != null">
+                and parent_id = #{parentId}
+            </if>
+            <if test="orderNum != null">
+                and order_num = #{orderNum}
+            </if>
+            <if test="path != null and path != ''">
+                and path = #{path}
+            </if>
+            <if test="component != null and component != ''">
+                and component = #{component}
+            </if>
+            <if test="menuType != null and menuType != ''">
+                and menu_type = #{menuType}
+            </if>
+            <if test="visible != null and visible != ''">
+                and visible = #{visible}
+            </if>
+            <if test="icon != null and icon != ''">
+                and icon = #{icon}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from menu
+        <where>
+            <if test="menuId != null">
+                and menu_id = #{menuId}
+            </if>
+            <if test="menuName != null and menuName != ''">
+                and menu_name = #{menuName}
+            </if>
+            <if test="perms != null and perms != ''">
+                and perms = #{perms}
+            </if>
+            <if test="parentId != null">
+                and parent_id = #{parentId}
+            </if>
+            <if test="orderNum != null">
+                and order_num = #{orderNum}
+            </if>
+            <if test="path != null and path != ''">
+                and path = #{path}
+            </if>
+            <if test="component != null and component != ''">
+                and component = #{component}
+            </if>
+            <if test="menuType != null and menuType != ''">
+                and menu_type = #{menuType}
+            </if>
+            <if test="visible != null and visible != ''">
+                and visible = #{visible}
+            </if>
+            <if test="icon != null and icon != ''">
+                and icon = #{icon}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="menuId" useGeneratedKeys="true">
+        insert into menu(menu_name, perms, parent_id, order_num, path, component, menu_type, visible, icon, create_by, create_time, update_by, update_time)
+        values (#{menuName}, #{perms}, #{parentId}, #{orderNum}, #{path}, #{component}, #{menuType}, #{visible}, #{icon}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="menuId" useGeneratedKeys="true">
+        insert into menu(menu_name, perms, parent_id, order_num, path, component, menu_type, visible, icon, create_by, create_time, update_by, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.menuName}, #{entity.perms}, #{entity.parentId}, #{entity.orderNum}, #{entity.path}, #{entity.component}, #{entity.menuType}, #{entity.visible}, #{entity.icon}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="menuId" useGeneratedKeys="true">
+        insert into menu(menu_name, perms, parent_id, order_num, path, component, menu_type, visible, icon, create_by, create_time, update_by, update_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.menuName}, #{entity.perms}, #{entity.parentId}, #{entity.orderNum}, #{entity.path}, #{entity.component}, #{entity.menuType}, #{entity.visible}, #{entity.icon}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime})
+        </foreach>
+        on duplicate key update
+        menu_name = values(menu_name),
+        perms = values(perms),
+        parent_id = values(parent_id),
+        order_num = values(order_num),
+        path = values(path),
+        component = values(component),
+        menu_type = values(menu_type),
+        visible = values(visible),
+        icon = values(icon),
+        create_by = values(create_by),
+        create_time = values(create_time),
+        update_by = values(update_by),
+        update_time = values(update_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update menu
+        <set>
+            <if test="menuName != null and menuName != ''">
+                menu_name = #{menuName},
+            </if>
+            <if test="perms != null and perms != ''">
+                perms = #{perms},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum},
+            </if>
+            <if test="path != null and path != ''">
+                path = #{path},
+            </if>
+            <if test="component != null and component != ''">
+                component = #{component},
+            </if>
+            <if test="menuType != null and menuType != ''">
+                menu_type = #{menuType},
+            </if>
+            <if test="visible != null and visible != ''">
+                visible = #{visible},
+            </if>
+            <if test="icon != null and icon != ''">
+                icon = #{icon},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by = #{createBy},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where menu_id = #{menuId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from menu where menu_id = #{menuId}
+    </delete>
+
+</mapper>
+

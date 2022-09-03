@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.mapper.OperLogDao">
+
+    <resultMap type="com.chen.entity.OperLog" id="OperLogMap">
+        <result property="operId" column="oper_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="businessType" column="business_type" jdbcType="VARCHAR"/>
+        <result property="method" column="method" jdbcType="VARCHAR"/>
+        <result property="requestMethod" column="request_method" jdbcType="VARCHAR"/>
+        <result property="operName" column="oper_name" jdbcType="VARCHAR"/>
+        <result property="operUrl" column="oper_url" jdbcType="VARCHAR"/>
+        <result property="operIp" column="oper_ip" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="errormsg" column="errorMsg" jdbcType="VARCHAR"/>
+        <result property="opertime" column="operTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="OperLogMap">
+        select
+          oper_id, title, business_type, method, request_method, oper_name, oper_url, oper_ip, status, errorMsg, operTime
+        from oper_log
+        where oper_id = #{operId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="OperLogMap">
+        select
+          oper_id, title, business_type, method, request_method, oper_name, oper_url, oper_ip, status, errorMsg, operTime
+        from oper_log
+        <where>
+            <if test="operId != null">
+                and oper_id = #{operId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="businessType != null and businessType != ''">
+                and business_type = #{businessType}
+            </if>
+            <if test="method != null and method != ''">
+                and method = #{method}
+            </if>
+            <if test="requestMethod != null and requestMethod != ''">
+                and request_method = #{requestMethod}
+            </if>
+            <if test="operName != null and operName != ''">
+                and oper_name = #{operName}
+            </if>
+            <if test="operUrl != null and operUrl != ''">
+                and oper_url = #{operUrl}
+            </if>
+            <if test="operIp != null and operIp != ''">
+                and oper_ip = #{operIp}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="errormsg != null and errormsg != ''">
+                and errorMsg = #{errormsg}
+            </if>
+            <if test="opertime != null">
+                and operTime = #{opertime}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from oper_log
+        <where>
+            <if test="operId != null">
+                and oper_id = #{operId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="businessType != null and businessType != ''">
+                and business_type = #{businessType}
+            </if>
+            <if test="method != null and method != ''">
+                and method = #{method}
+            </if>
+            <if test="requestMethod != null and requestMethod != ''">
+                and request_method = #{requestMethod}
+            </if>
+            <if test="operName != null and operName != ''">
+                and oper_name = #{operName}
+            </if>
+            <if test="operUrl != null and operUrl != ''">
+                and oper_url = #{operUrl}
+            </if>
+            <if test="operIp != null and operIp != ''">
+                and oper_ip = #{operIp}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="errormsg != null and errormsg != ''">
+                and errorMsg = #{errormsg}
+            </if>
+            <if test="opertime != null">
+                and operTime = #{opertime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="operId" useGeneratedKeys="true">
+        insert into oper_log(title, business_type, method, request_method, oper_name, oper_url, oper_ip, status, errorMsg, operTime)
+        values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operName}, #{operUrl}, #{operIp}, #{status}, #{errormsg}, #{opertime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="operId" useGeneratedKeys="true">
+        insert into oper_log(title, business_type, method, request_method, oper_name, oper_url, oper_ip, status, errorMsg, operTime)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.title}, #{entity.businessType}, #{entity.method}, #{entity.requestMethod}, #{entity.operName}, #{entity.operUrl}, #{entity.operIp}, #{entity.status}, #{entity.errormsg}, #{entity.opertime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="operId" useGeneratedKeys="true">
+        insert into oper_log(title, business_type, method, request_method, oper_name, oper_url, oper_ip, status, errorMsg, operTime)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.title}, #{entity.businessType}, #{entity.method}, #{entity.requestMethod}, #{entity.operName}, #{entity.operUrl}, #{entity.operIp}, #{entity.status}, #{entity.errormsg}, #{entity.opertime})
+        </foreach>
+        on duplicate key update
+        title = values(title),
+        business_type = values(business_type),
+        method = values(method),
+        request_method = values(request_method),
+        oper_name = values(oper_name),
+        oper_url = values(oper_url),
+        oper_ip = values(oper_ip),
+        status = values(status),
+        errorMsg = values(errorMsg),
+        operTime = values(operTime)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update oper_log
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="businessType != null and businessType != ''">
+                business_type = #{businessType},
+            </if>
+            <if test="method != null and method != ''">
+                method = #{method},
+            </if>
+            <if test="requestMethod != null and requestMethod != ''">
+                request_method = #{requestMethod},
+            </if>
+            <if test="operName != null and operName != ''">
+                oper_name = #{operName},
+            </if>
+            <if test="operUrl != null and operUrl != ''">
+                oper_url = #{operUrl},
+            </if>
+            <if test="operIp != null and operIp != ''">
+                oper_ip = #{operIp},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="errormsg != null and errormsg != ''">
+                errorMsg = #{errormsg},
+            </if>
+            <if test="opertime != null">
+                operTime = #{opertime},
+            </if>
+        </set>
+        where oper_id = #{operId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from oper_log where oper_id = #{operId}
+    </delete>
+
+</mapper>
+

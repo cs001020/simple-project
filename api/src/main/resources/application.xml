@@ -116,4 +116,12 @@
         </tx:attributes>
     </tx:advice>
 
+<!--    jedis连接池-->
+    <bean class="redis.clients.jedis.JedisPool" id="jedisPool">
+        <constructor-arg name="host" value="192.168.0.105"/>
+        <constructor-arg name="port" value="6379"/>
+        <property name="maxIdle" value="30"/>
+        <property name="minIdle" value="30"/>
+        <property name="maxTotal" value="100"/>
+    </bean>
 </beans>
