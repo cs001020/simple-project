@@ -1,5 +1,8 @@
 package com.chen.entity;
 
+import org.hibernate.validator.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.io.Serializable;
 
@@ -18,6 +21,8 @@ public class User implements Serializable {
     /**
      * 用户账号
      */
+    @NotNull
+    @Size(min = 5,max = 15,message = "用户名的长度为5-15之间")
     private String userName;
     /**
      * 用户昵称
@@ -26,6 +31,7 @@ public class User implements Serializable {
     /**
      * 用户邮箱
      */
+    @Email
     private String email;
     /**
      * 手机号码
@@ -42,6 +48,8 @@ public class User implements Serializable {
     /**
      * 密码
      */
+    @NotNull
+    @Size(min = 5,max = 15,message = "密码的长度为5-15之间")
     private String password;
     /**
      * 帐号状态（0正常 1停用）

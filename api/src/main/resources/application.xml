@@ -62,6 +62,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <mvc:annotation-driven />
     <!--处理静态资源，前后分离项目不需要处理静态资源-->
 
 

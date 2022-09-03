@@ -1,5 +1,6 @@
 package com.chen.service;
 
+import com.chen.entity.LoginUser;
 import com.chen.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,4 +54,11 @@ public interface UserService {
      */
     boolean deleteById(Long userId);
 
+    /**
+     * 登陆认证
+     * @param userName
+     * @param password
+     * @return
+     */
+    LoginUser login(String userName, String password);
 }

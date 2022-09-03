@@ -28,7 +28,13 @@
         from user
         where user_id = #{userId}
     </select>
-
+<!--    User queryByUserName(String userName);-->
+    <select id="queryByUserName" resultMap="UserMap">
+        select
+            user_id, user_name, nick_name, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time
+        from user
+        where user_name = #{userName}
+    </select>
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="UserMap">
         select

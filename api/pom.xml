@@ -21,7 +21,7 @@
         <lombok.version>1.18.24</lombok.version>
         <jackson.version>2.13.3</jackson.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
-        <hibernate-validator>7.0.5.Final</hibernate-validator>
+        <hibernate-validator>5.2.5.Final</hibernate-validator>
         <logback-classic.version>1.2.11</logback-classic.version>
         <commons-fileupload.version>1.4</commons-fileupload.version>
         <druid.version>1.2.11</druid.version>
@@ -86,7 +86,7 @@
             <version>${jackson.version}</version>
         </dependency>
 
-        <!--数据校验-->
+<!--        数据校验-->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -152,22 +152,33 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+<!--        工具-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>1.21</version>
+        </dependency>
     </dependencies>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.1</version>-->
+<!--                <configuration>-->
+<!--                    <source>${java.version}</source>-->
+<!--                    <target>${java.version}</target>-->
+<!--                    <encoding>${project.build.sourceEncoding}</encoding>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>

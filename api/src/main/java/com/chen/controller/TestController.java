@@ -3,7 +3,6 @@ package com.chen.controller;
 import com.chen.configuration.RedisTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,9 +13,10 @@ import java.util.List;
 /**
  * @author CHEN
  */
-@RestController
+
 //@CrossOrigin
 @Slf4j
+@RestController
 public class TestController {
     @Resource
     private RedisTemplate redisTemplate;
