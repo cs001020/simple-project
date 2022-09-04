@@ -41,53 +41,53 @@
           user_id, user_name, nick_name, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time
         from user
         <where>
-            <if test="userId != null">
-                and user_id = #{userId}
+            <if test="user.userId != null">
+                and user_id = #{user.userId}
             </if>
-            <if test="userName != null and userName != ''">
-                and user_name = #{userName}
+            <if test="user.userName != null and user.userName != ''">
+                and user_name = #{user.userName}
             </if>
-            <if test="nickName != null and nickName != ''">
-                and nick_name = #{nickName}
+            <if test="user.nickName != null and user.nickName != ''">
+                and nick_name = #{user.nickName}
             </if>
-            <if test="email != null and email != ''">
-                and email = #{email}
+            <if test="user.email != null and user.email != ''">
+                and email = #{user.email}
             </if>
-            <if test="phonenumber != null and phonenumber != ''">
+            <if test="user.phonenumber != null and user.phonenumber != ''">
                 and phonenumber = #{phonenumber}
             </if>
-            <if test="sex != null and sex != ''">
-                and sex = #{sex}
+            <if test="user.sex != null and user.sex != ''">
+                and sex = #{user.sex}
             </if>
-            <if test="avatar != null and avatar != ''">
-                and avatar = #{avatar}
+            <if test="user.avatar != null and user.avatar != ''">
+                and avatar = #{user.avatar}
             </if>
-            <if test="password != null and password != ''">
-                and password = #{password}
+            <if test="user.password != null and user.password != ''">
+                and password = #{user.password}
             </if>
-            <if test="status != null and status != ''">
-                and status = #{status}
+            <if test="user.status != null and user.status != ''">
+                and status = #{user.status}
             </if>
-            <if test="delFlag != null and delFlag != ''">
-                and del_flag = #{delFlag}
+            <if test="user.delFlag != null and user.delFlag != ''">
+                and del_flag = #{user.delFlag}
             </if>
-            <if test="loginIp != null and loginIp != ''">
-                and login_ip = #{loginIp}
+            <if test="user.loginIp != null and user.loginIp != ''">
+                and login_ip = #{user.loginIp}
             </if>
-            <if test="loginDate != null">
-                and login_date = #{loginDate}
+            <if test="user.loginDate != null">
+                and login_date = #{user.loginDate}
             </if>
-            <if test="createBy != null and createBy != ''">
-                and create_by = #{createBy}
+            <if test="user.createBy != null and user.createBy != ''">
+                and create_by = #{user.createBy}
             </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
+            <if test="user.createTime != null">
+                and create_time = #{user.createTime}
             </if>
-            <if test="updateBy != null and updateBy != ''">
-                and update_by = #{updateBy}
+            <if test="user.updateBy != null and user.updateBy != ''">
+                and update_by = #{user.updateBy}
             </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
+            <if test="user.updateTime != null">
+                and update_time = #{user.updateTime}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

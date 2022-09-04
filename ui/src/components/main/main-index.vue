@@ -44,7 +44,7 @@
       </el-row>
     </el-aside>
     <el-container>
-      <el-header>昵称
+      <el-header>昵称:{{store.state.user.nickname}}
         <el-button color="#626aedf" @click="doLoginOut">注销</el-button>
       </el-header>
       <!--进行路由跳转-->
@@ -65,6 +65,9 @@ let doLoginOut = function () {
     console.log(res)
     router.push({name:"login"})
   })
+};
+let open=function (name){
+  router.push({name})
 }
 </script>
 

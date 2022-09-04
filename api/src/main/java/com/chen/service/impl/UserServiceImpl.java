@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -128,7 +129,16 @@ public class UserServiceImpl implements UserService {
                 .loginLocation((String) entries.get("addr"))
                 .ipaddr((String) entries.get("ip"))
                 .build();
-        redisTemplate.setObj(Constant.TOKEN_KEY+token,loginUser,Constant.TOKEN_TIME);
+        //根据用户名字生成key前缀
+        String keyPrefix = Constant.TOKEN_KEY + userName+":";
+        //查询key是否存在
+        Set<String> keys = redisTemplate.keys(keyPrefix + "*");
+        //存在时删除
+        if (keys!=null&&keys.size()!=0){
+            keys.forEach(key->redisTemplate.remove(key));
+        }
+        //新增登陆用户
+        redisTemplate.setObj(keyPrefix+token,loginUser,Constant.TOKEN_TIME);
         return loginUser;
     }
 
@@ -136,6 +146,9 @@ public class UserServiceImpl implements UserService {
     public void logOut() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         //redis删除token
-        Long remove = redisTemplate.remove(Constant.TOKEN_KEY + request.getHeader(Constant.HAND_AUTHORIZATION));
+        String token = request.getHeader(Constant.HAND_AUTHORIZATION);
+        Set<String> keys = redisTemplate.keys(Constant.TOKEN_KEY + "*" + token);
+        String key = (String) keys.toArray()[0];
+        redisTemplate.remove(key);
     }
 }

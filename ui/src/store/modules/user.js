@@ -6,7 +6,10 @@ const user = {
         nickname:"",
         token:""
     },
-    getters:{   
+    getters:{
+        ISLOGIN(state){
+            return state.username!==''&&state.token!=='';
+        }
     },
     mutations: {
         SAVE_USERNAME(state,username){
@@ -43,7 +46,17 @@ const user = {
                     resolve(res)
                 })
             })
+        },
+        RECOVERY_USER({commit}){
+            let loginUser = storage.getSessionObject("loginUser");
+            console.log(loginUser)
+            if (loginUser){
+                commit("SAVE_USERNAME",loginUser.user.userName);
+                commit("SAVE_NICKNAME",loginUser.user.nickName);
+                commit("SAVE_TOKEN",loginUser.token);
+            }
         }
+
     }
 }
 

@@ -28,7 +28,7 @@ public interface UserDao {
      * @param pageable         分页对象
      * @return 对象列表
      */
-    List<User> queryAllByLimit(User user, @Param("pageable") Pageable pageable);
+    List<User> queryAllByLimit(@Param("user") User user, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数

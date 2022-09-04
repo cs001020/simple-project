@@ -10,6 +10,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisException;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * @author CHEN
@@ -133,5 +134,21 @@ public class RedisTemplate {
             jedisPool.returnResource(resource);
         }
         return res;
+    }
+    /**
+     * 获取键
+     */
+    public Set<String> keys(String pattern){
+        Jedis resource = jedisPool.getResource();
+        Set<String> keys=null;
+        try {
+            keys = resource.keys(pattern);
+        }catch (JedisException e){
+            log.error("redis exception error",e);
+            jedisPool.returnBrokenResource(resource);
+        } finally {
+            jedisPool.returnResource(resource);
+        }
+        return keys;
     }
 }

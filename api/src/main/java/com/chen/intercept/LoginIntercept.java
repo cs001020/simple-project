@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 
 /**
@@ -34,8 +35,16 @@ public class LoginIntercept implements HandlerInterceptor {
             response.getWriter().write(objectMapper.writeValueAsString(responseEntity));
             return false;
         }
+        //使用token去redis中查看有没对应的key
+        Set<String> keys = redisTemplate.keys(Constant.TOKEN_KEY + "*" + token);
+        if (keys==null||keys.size()==0){
+            response.setStatus(401);
+            response.getWriter().write(objectMapper.writeValueAsString(responseEntity));
+            return false;
+        }
+        String key = (String) keys.toArray()[0];
         //使用token去redis中查看有没对应的loginUser
-        LoginUser loginUser = redisTemplate.getObj(Constant.TOKEN_KEY + token, new TypeReference<LoginUser>() {});
+        LoginUser loginUser = redisTemplate.getObj(key, new TypeReference<LoginUser>() {});
         if (loginUser==null){
             response.setStatus(401);
             response.getWriter().write(objectMapper.writeValueAsString(responseEntity));

@@ -3,6 +3,8 @@ import {
     createRouter,
     createWebHistory
 } from 'vue-router'
+import store from '@/store'
+import storage from '@/utils/storage'
 
 /**
  * 定义路由信息
@@ -16,7 +18,14 @@ const routes = [{
         name: 'main',
         alias: '/',
         path: '/main',
-        component: () => import('@/components/main/main-index')
+        component: () => import('@/components/main/main-index'),
+        children:[
+            {
+                name: 'user',
+                path: '/user',
+                component: () => import('@/components/system/user/user-index'),
+            }
+        ]
     }]
 
 // 创建路由实例并传递 `routes` 配置
@@ -28,9 +37,20 @@ const router = createRouter({
 
 
 // 全局的路由守卫
-router.beforeEach((to, from) => {
-    console.log(to)
-    console.log(from)
+router.beforeEach((to) => {
+    //访问登陆页面直接放行
+    if (to.name==="login"){
+        return true;
+    }
+    //检查是否登陆
+    if (!store.getters.ISLOGIN){
+        //未登陆跳转登陆页面
+        if (!storage.getSessionObject("loginUser")) {
+            router.push({name: "login"})
+        }else {
+            store.dispatch("RECOVERY_USER")
+        }
+    }
     return true
 })
 
