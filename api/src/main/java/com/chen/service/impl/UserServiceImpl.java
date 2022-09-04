@@ -128,7 +128,14 @@ public class UserServiceImpl implements UserService {
                 .loginLocation((String) entries.get("addr"))
                 .ipaddr((String) entries.get("ip"))
                 .build();
-        redisTemplate.setObj(Constant.TOKEN_KEY+token,loginUser,30*60L);
+        redisTemplate.setObj(Constant.TOKEN_KEY+token,loginUser,Constant.TOKEN_TIME);
         return loginUser;
+    }
+
+    @Override
+    public void logOut() {
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        //redis删除token
+        Long remove = redisTemplate.remove(Constant.TOKEN_KEY + request.getHeader(Constant.HAND_AUTHORIZATION));
     }
 }

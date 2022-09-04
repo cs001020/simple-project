@@ -97,4 +97,41 @@ public class RedisTemplate {
         }
         return  object;
     }
+
+    /**
+     * 删除keys
+     * @param key key
+     * @return
+     */
+    public Long remove(String ... key){
+        Jedis resource = jedisPool.getResource();
+        String result=null;
+        long res=0L;
+        try {
+            res = resource.del(key);
+        }catch (JedisException e){
+            log.error("redis exception error",e);
+            jedisPool.returnBrokenResource(resource);
+        } finally {
+            jedisPool.returnResource(resource);
+        }
+        return res;
+    }
+
+    /**
+     * 续命
+     */
+    public Long expire(String key,Long expire){
+        Jedis resource = jedisPool.getResource();
+        long res=-1L;
+        try {
+            res = resource.expire(key, expire);
+        }catch (JedisException e){
+            log.error("redis exception error",e);
+            jedisPool.returnBrokenResource(resource);
+        } finally {
+            jedisPool.returnResource(resource);
+        }
+        return res;
+    }
 }

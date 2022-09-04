@@ -4,13 +4,9 @@ import com.chen.entity.LoginUser;
 import com.chen.entity.User;
 import com.chen.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,8 +23,8 @@ public class IndexController {
 
     /**
      * 登陆认证
-     * @param user
-     * @return
+     * @param user 用户
+     * @return 结果
      */
     @PostMapping("/login")
     public ResponseEntity<LoginUser> login(@RequestBody @Validated User user, BindingResult bindingResult){
@@ -39,6 +35,15 @@ public class IndexController {
         }
         LoginUser loginUser= userService.login(user.getUserName(),user.getPassword());
         return ResponseEntity.ok().body(loginUser);
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logOut(){
+        try {
+            userService.logOut();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+        return ResponseEntity.ok().body("退出成功");
     }
 
 }

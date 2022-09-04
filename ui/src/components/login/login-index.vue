@@ -1,11 +1,13 @@
 <template>
   <el-container>
     <el-aside width="790px"
-    ><el-image
-        fit="fill"
-        :src="require('@/assets/image/background.png')"
-    ></el-image
-    ></el-aside>
+    >
+      <el-image
+          fit="fill"
+          :src="require('@/assets/image/background.png')"
+      ></el-image
+      >
+    </el-aside>
     <el-main>
       <el-card class="box-card login-card">
         <span class="login-title">后台管理系统</span>
@@ -14,10 +16,11 @@
             ref="user"
             :model="user"
             label-width="80px"
+            :rules="loginRules"
         >
-          <el-form-item label="用户名" prop="username">
+          <el-form-item label="用户名" prop="userName">
             <el-input
-                v-model="user.username"
+                v-model="user.userName"
                 placeholder="请输入用户"
             ></el-input>
           </el-form-item>
@@ -30,7 +33,7 @@
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="login">登陆</el-button>
+            <el-button type="primary" @click="doLogin">登陆</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -39,6 +42,7 @@
 </template>
 
 <script>
+import {ElMessage} from 'element-plus'
 export default {
   name: "login-index",
   data() {
@@ -46,14 +50,36 @@ export default {
       // 用户信息
       url: "../../assets/image/login_left.png",
       user: {
-        username: "admin",
-        password: "123456",
+        userName: "admin",
+        password: "123123",
+      },
+      loginRules: {
+        userName: [
+          { required: true, trigger: "blur", message: "密码不能为空" },
+          { min: 3, max: 10, message: '用户名长度为3-10位', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, trigger: "blur", message: "密码不能为空" },
+          { min: 3, max: 10, message: '密码长度为3-10位', trigger: 'blur' }
+        ]
       },
     };
   },
-  methods:{
-    login(){
-      this.$router.push({name:'main'})
+  methods: {
+    doLogin() {
+      this.$refs.user.validate((valid)=>{
+        if (valid){
+          this.$store.dispatch("LOGIN", this.user).then(res=>{
+            console.log(res)
+            if (res.status===200){
+              this.$router.push({name:"main"})
+              ElMessage("登录成功")
+            }
+          });
+        }else {
+          ElMessage("数据不合法")
+        }
+      })
     }
   }
 };
@@ -64,9 +90,11 @@ export default {
   height: 885px;
   width: 750px;
 }
+
 .el-main {
   position: relative;
 }
+
 .login-card {
   position: absolute;
   top: 0;
@@ -78,6 +106,7 @@ export default {
   height: 400px;
   padding: 50px;
 }
+
 .login-title {
   width: 459px;
   height: 70px;
@@ -90,6 +119,7 @@ export default {
   display: block;
   text-align: left;
 }
+
 .login-tip {
   width: 319px;
   height: 70px;

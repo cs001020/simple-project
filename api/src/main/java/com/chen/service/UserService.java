@@ -61,4 +61,9 @@ public interface UserService {
      * @return
      */
     LoginUser login(String userName, String password);
+
+    /**
+     * 退出登陆
+     */
+    void logOut();
 }

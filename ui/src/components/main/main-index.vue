@@ -27,10 +27,12 @@
               </template>
 
               <el-menu-item index="1-1" @click="open('user')">
-                用户管理</el-menu-item
+                用户管理
+              </el-menu-item
               >
               <el-menu-item index="1-2" @click="open('role')">
-                角色管理</el-menu-item
+                角色管理
+              </el-menu-item
               >
             </el-sub-menu>
             <el-menu-item index="2">
@@ -42,16 +44,28 @@
       </el-row>
     </el-aside>
     <el-container>
-      <el-header v-html="'<button onclick=\'alert(1)\'>我是攻击者的按钮</button>'"></el-header>
+      <el-header>昵称
+        <el-button color="#626aedf" @click="doLoginOut">注销</el-button>
+      </el-header>
       <!--进行路由跳转-->
       <el-main>
-        <router-view />
+        <router-view/>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script setup>
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
+let store = useStore()
+const router=useRouter()
+let doLoginOut = function () {
+  store.dispatch("LOGOUT").then(res=>{
+    console.log(res)
+    router.push({name:"login"})
+  })
+}
 </script>
 
 <style scoped>
