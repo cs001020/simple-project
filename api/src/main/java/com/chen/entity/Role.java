@@ -1,7 +1,12 @@
 package com.chen.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 角色信息表(Role)实体类
@@ -9,6 +14,9 @@ import java.io.Serializable;
  * @author makejava
  * @since 2022-09-03 17:52:41
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Role implements Serializable {
     private static final long serialVersionUID = -44925135666703382L;
     /**
@@ -52,86 +60,10 @@ public class Role implements Serializable {
      */
     private Date updateTime;
 
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getRoleTag() {
-        return roleTag;
-    }
-
-    public void setRoleTag(String roleTag) {
-        this.roleTag = roleTag;
-    }
-
-    public Integer getRoleSort() {
-        return roleSort;
-    }
-
-    public void setRoleSort(Integer roleSort) {
-        this.roleSort = roleSort;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+    /**
+     * 角色有用的权限
+     */
+    private List<Menu> menus;
 
 }
 

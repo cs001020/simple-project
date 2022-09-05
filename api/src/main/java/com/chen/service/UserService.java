@@ -5,6 +5,9 @@ import com.chen.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 用户信息表(User)表服务接口
  *
@@ -66,4 +69,9 @@ public interface UserService {
      * 退出登陆
      */
     void logOut();
+
+    /**
+     * @return 获取用户的所用信息
+     */
+    Map<String, List<String>> getInfo();
 }

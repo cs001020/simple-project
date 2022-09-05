@@ -25,9 +25,22 @@ export function login(data) {
         data:data
     })
 }
-export function loginout() {
+export function logout() {
     return request({
         url: '/logout',
         method: 'post',
+    })
+}
+export function listUser(data) {
+    return request({
+        url: '/user',
+        method: 'get',
+        params:data
+    })
+}
+export function getInfo() {
+    return request({
+        url: '/user/getInfo',
+        method: 'get',
     })
 }

@@ -6,11 +6,14 @@ import cn.hutool.json.JSONUtil;
 import com.chen.configuration.Constant;
 import com.chen.configuration.RedisTemplate;
 import com.chen.entity.LoginUser;
+import com.chen.entity.Menu;
+import com.chen.entity.Role;
 import com.chen.entity.User;
 import com.chen.exception.UserNotFoundException;
 import com.chen.exception.UserPasswordInaccuracyException;
 import com.chen.mapper.UserDao;
 import com.chen.service.UserService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -21,10 +24,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息表(User)表服务实现类
@@ -150,5 +151,54 @@ public class UserServiceImpl implements UserService {
         Set<String> keys = redisTemplate.keys(Constant.TOKEN_KEY + "*" + token);
         String key = (String) keys.toArray()[0];
         redisTemplate.remove(key);
+    }
+
+    @Override
+    public Map<String, List<String>> getInfo() {
+        //获取登陆用户
+        LoginUser loginUser = getLoginUser();
+        //获取登陆用户的信息
+        User info = userDao.getInfo(loginUser.getUserId());
+        //删除
+        Set<String> keys = redisTemplate.keys(Constant.ROLE_PREFIX +info.getUserName()+":"+"*");
+        Set<String> keys1 = redisTemplate.keys(Constant.PERM_PREFIX +info.getUserName()+":"+"*" );
+        if (keys!=null&&keys.size()!=0){
+            keys.forEach(redisTemplate::remove);
+        }
+        if (keys1!=null&&keys1.size()!=0){
+            keys1.forEach(redisTemplate::remove);
+        }
+        //处理权限和角色相关信息
+        List<String> roleTags = info.getRoles().stream().map(Role::getRoleTag).collect(Collectors.toList());
+        redisTemplate.setObj(Constant.ROLE_PREFIX+info.getUserName()+":"+loginUser.getToken(),roleTags,Constant.TOKEN_TIME);
+        List<String> prems=new ArrayList<>();
+        info.getRoles().stream().map(Role::getMenus).forEach(menus -> {
+            prems.addAll(menus.stream().map(Menu::getPerms).collect(Collectors.toList()));
+        });
+        redisTemplate.setObj(Constant.PERM_PREFIX+info.getUserName()+":"+loginUser.getToken(),prems,Constant.TOKEN_TIME);
+        //整合数据
+        Map<String,List<String>> data=new HashMap<>();
+        data.put("roles",roleTags);
+        data.put("perms",prems);
+        return data;
+    }
+    private LoginUser getLoginUser(){
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        String token = request.getHeader(Constant.HAND_AUTHORIZATION);
+        if (token==null){
+            throw new RuntimeException("当前用户未登陆");
+        }
+        //使用token去redis中查看有没对应的key
+        Set<String> keys = redisTemplate.keys(Constant.TOKEN_KEY + "*" + token);
+        if (keys==null||keys.size()==0){
+           throw new RuntimeException("当前用户未登陆");
+        }
+        String key = (String) keys.toArray()[0];
+        //使用token去redis中查看有没对应的loginUser
+        LoginUser loginUser = redisTemplate.getObj(key, new TypeReference<LoginUser>() {});
+        if (loginUser==null){
+            throw new RuntimeException("当前用户未登陆");
+        }
+        return loginUser;
     }
 }

@@ -93,6 +93,7 @@
         <property name="typeAliasesPackage" value="com.chen.ssm.pojo"/>
         <property name="configuration">
             <bean class="org.apache.ibatis.session.Configuration">
+                <property name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>
                 <property name="mapUnderscoreToCamelCase" value="true"/>
                 <property name="logPrefix" value="chen"/>
             </bean>

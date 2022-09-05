@@ -24,8 +24,8 @@ public interface UserDao {
     /**
      * 查询指定行数据
      *
-     * @param user 查询条件
-     * @param pageable         分页对象
+     * @param user     查询条件
+     * @param pageable 分页对象
      * @return 对象列表
      */
     List<User> queryAllByLimit(@Param("user") User user, @Param("pageable") Pageable pageable);
@@ -80,11 +80,18 @@ public interface UserDao {
     int deleteById(Long userId);
 
     /**
-     *
      * 通过用户名获取用户信息
+     *
      * @param userName 用户名
      * @return 用户
      */
     User queryByUserName(String userName);
+
+    /**
+     * 通用用户id 查询 角色 权限等信息
+     * @param userId 用户id
+     * @return 角色 权限等信息
+     */
+    User getInfo(Long userId);
 }
 

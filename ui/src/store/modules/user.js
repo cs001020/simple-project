@@ -1,4 +1,4 @@
-import {login,loginout} from "@/api/user";
+import {login,logout} from "@/api/user";
 import  storage from '@/utils/storage'
 const user = {
     state: {
@@ -37,7 +37,7 @@ const user = {
         },
         LOGOUT({commit}){
             return new  Promise(function (resolve){
-                loginout().then(res=>{
+                logout().then(res=>{
                     //将获取的数据保存起来
                     commit("SAVE_USERNAME",'');
                     commit("SAVE_NICKNAME",'');
@@ -49,7 +49,7 @@ const user = {
         },
         RECOVERY_USER({commit}){
             let loginUser = storage.getSessionObject("loginUser");
-            console.log(loginUser)
+            // console.log(loginUser)
             if (loginUser){
                 commit("SAVE_USERNAME",loginUser.user.userName);
                 commit("SAVE_NICKNAME",loginUser.user.nickName);

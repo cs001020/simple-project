@@ -19,6 +19,16 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <collection property="roles" ofType="com.chen.entity.Role" >
+            <id property="roleId" column="role_id"/>
+            <result property="roleName" column="role_name"/>
+            <result property="roleTag" column="role_tag"/>
+            <collection property="menus" ofType="com.chen.entity.Menu" >
+                <id property="menuId" column="menu_id"/>
+                <result property="menuName" column="menu_name"/>
+                <result property="perms" column="perms"/>
+            </collection>
+        </collection>
     </resultMap>
 
     <!--查询单个-->
@@ -28,13 +38,35 @@
         from user
         where user_id = #{userId}
     </select>
-<!--    User queryByUserName(String userName);-->
+<!--    User getInfo(Long userId);-->
     <select id="queryByUserName" resultMap="UserMap">
         select
             user_id, user_name, nick_name, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time
         from user
         where user_name = #{userName}
     </select>
+
+    <!--    User queryByUserName(String userName);-->
+    <select id="getInfo" resultMap="UserMap">
+        SELECT
+            u.user_id as user_id,
+            user_name,
+            nick_name,
+            r.role_id,
+            r.role_name,
+            r.role_tag,
+            m.menu_id,
+            m.menu_name,
+            m.perms
+        FROM
+            user u
+                LEFT JOIN `user_role` ur ON u.user_id = ur.user_id
+                LEFT JOIN role r ON ur.role_id = r.role_id
+                LEFT JOIN role_menu rm ON r.role_id = rm.role_id
+                LEFT JOIN menu m ON rm.menu_id = m.menu_id
+        where u.del_flag = 0 and r.del_flag = 0 and u.user_id = #{user_id}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="UserMap">
         select

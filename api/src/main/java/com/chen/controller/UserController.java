@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户信息表(User)表控制层
@@ -31,8 +33,12 @@ public class UserController {
      * @return 查询结果
      */
     @GetMapping
-    public ResponseEntity<Page<User>> queryByPage(@RequestBody User user) {
+    public ResponseEntity<Page<User>> queryByPage(User user) {
         return ResponseEntity.ok(this.userService.queryByPage(user,PageRequest.of(user.getPage(),user.getSize())));
+    }
+    @GetMapping("/getInfo")
+    public ResponseEntity<Map<String, List<String>>> getInfo() {
+        return ResponseEntity.ok(this.userService.getInfo());
     }
 
     /**
