@@ -148,16 +148,22 @@ public class UserServiceImpl implements UserService {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         //redis删除token
         String token = request.getHeader(Constant.HAND_AUTHORIZATION);
-        Set<String> keys = redisTemplate.keys(Constant.TOKEN_KEY + "*" + token);
-        String key = (String) keys.toArray()[0];
-        redisTemplate.remove(key);
+        Set<String> keys1 = redisTemplate.keys(Constant.TOKEN_KEY + "*" + token);
+        Set<String> keys2 = redisTemplate.keys(Constant.PERM_PREFIX + "*" + token);
+        Set<String> keys3 = redisTemplate.keys(Constant.ROLE_PREFIX + "*" + token);
+        String key1 = (String) keys1.toArray()[0];
+        String key2 = (String) keys2.toArray()[0];
+        String key3 = (String) keys3.toArray()[0];
+        redisTemplate.remove(key1);
+        redisTemplate.remove(key2);
+        redisTemplate.remove(key3);
     }
 
     @Override
     public Map<String, List<String>> getInfo() {
         //获取登陆用户
         LoginUser loginUser = getLoginUser();
-        //获取登陆用户的信息
+        //获取登陆用户的信息Permissions
         User info = userDao.getInfo(loginUser.getUserId());
         //删除
         Set<String> keys = redisTemplate.keys(Constant.ROLE_PREFIX +info.getUserName()+":"+"*");

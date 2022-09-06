@@ -29,7 +29,7 @@ public class User extends BaseEntity implements Serializable {
      * 用户账号
      */
     @NotNull
-    @Size(min = 5,max = 15,message = "用户名的长度为5-15之间")
+    @Size(min = 2,max = 15,message = "用户名的长度为5-15之间")
     private String userName;
     /**
      * 用户昵称

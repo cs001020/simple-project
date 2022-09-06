@@ -1,14 +1,22 @@
-import {login,logout} from "@/api/user";
+import {login,logout,getInfo} from "@/api/user";
 import  storage from '@/utils/storage'
 const user = {
     state: {
         username:"",
         nickname:"",
-        token:""
+        token:"",
+        roles:[],
+        permissions:[]
     },
     getters:{
         ISLOGIN(state){
             return state.username!==''&&state.token!=='';
+        },
+        permissions(state){
+            return state.permissions
+        },
+        roles(state){
+            return state.roles
         }
     },
     mutations: {
@@ -21,6 +29,12 @@ const user = {
         SAVE_TOKEN(state,token){
             state.token=token;
         },
+        SAVA_ROLES(state,roles){
+            state.roles=roles;
+        },
+        SAVA_PERMISSIONS(state,permissions){
+            state.permissions=permissions;
+        }
     },
     actions: {
         LOGIN({commit},user){
@@ -42,6 +56,8 @@ const user = {
                     commit("SAVE_USERNAME",'');
                     commit("SAVE_NICKNAME",'');
                     commit("SAVE_TOKEN",'');
+                    commit("SAVA_PERMISSIONS",[]);
+                    commit("SAVA_ROLES",[])
                     storage.remove("loginUser")
                     resolve(res)
                 })
@@ -55,6 +71,17 @@ const user = {
                 commit("SAVE_NICKNAME",loginUser.user.nickName);
                 commit("SAVE_TOKEN",loginUser.token);
             }
+        },
+        GET_INFO({commit}){
+            return new  Promise(function (resolve){
+                getInfo().then(res=>{
+                    // console.log(res)
+                    commit("SAVA_ROLES",res.data.roles)
+                    commit("SAVA_PERMISSIONS",res.data.perms)
+                    resolve()
+                })
+            })
+
         }
 
     }

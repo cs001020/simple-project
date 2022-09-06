@@ -21,16 +21,16 @@
               text-color="#fff"
           >
             <el-sub-menu index="1">
-              <template #title>
+              <template #title >
                 <el-icon></el-icon>
                 <span>系统管理</span>
               </template>
 
-              <el-menu-item index="1-1" @click="open('user')">
+              <el-menu-item index="1-1" @click="open('user')" v-hasPermission="['system:user:query']">
                 用户管理
               </el-menu-item
               >
-              <el-menu-item index="1-2" @click="open('role')">
+              <el-menu-item index="1-2" @click="open('roles')">
                 角色管理
               </el-menu-item
               >

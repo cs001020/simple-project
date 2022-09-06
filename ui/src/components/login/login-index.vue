@@ -43,7 +43,6 @@
 
 <script>
 import {ElMessage} from 'element-plus'
-import {getInfo} from "@/api/user";
 
 export default {
   name: "login-index",
@@ -75,9 +74,10 @@ export default {
             // console.log(res)
             if (res.status===200){
               //跳转前获取权限信息
-              getInfo()
-              this.$router.push({name:"main"})
-              ElMessage("登录成功")
+              this.$store.dispatch("GET_INFO").then(()=>{
+                this.$router.push({name:"main"})
+                ElMessage("登录成功")
+              })
             }
           });
         }else {

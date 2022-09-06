@@ -1,5 +1,7 @@
 package com.chen.controller;
 
+import com.chen.annotation.Permissions;
+import com.chen.annotation.Roles;
 import com.chen.entity.User;
 import com.chen.service.UserService;
 import org.springframework.data.domain.Page;
@@ -48,6 +50,8 @@ public class UserController {
      * @return 单条数据
      */
     @GetMapping("{id}")
+    @Permissions("system:user:query")
+    @Roles("admin")
     public ResponseEntity<User> queryById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.userService.queryById(id));
     }

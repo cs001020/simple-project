@@ -49,6 +49,7 @@ router.beforeEach((to) => {
             router.push({name: "login"})
         }else {
             store.dispatch("RECOVERY_USER")
+            store.dispatch("GET_INFO")
         }
     }
     return true

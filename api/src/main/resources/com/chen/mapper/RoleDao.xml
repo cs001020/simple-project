@@ -19,7 +19,7 @@
     <select id="queryById" resultMap="RoleMap">
         select
           role_id, role_name, role_tag, role_sort, status, del_flag, create_by, create_time, update_by, update_time
-        from role
+        from roles
         where role_id = #{roleId}
     </select>
 
@@ -27,7 +27,7 @@
     <select id="queryAllByLimit" resultMap="RoleMap">
         select
           role_id, role_name, role_tag, role_sort, status, del_flag, create_by, create_time, update_by, update_time
-        from role
+        from roles
         <where>
             <if test="roleId != null">
                 and role_id = #{roleId}
@@ -66,7 +66,7 @@
     <!--统计总行数-->
     <select id="count" resultType="java.lang.Long">
         select count(1)
-        from role
+        from roles
         <where>
             <if test="roleId != null">
                 and role_id = #{roleId}
@@ -103,12 +103,12 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="roleId" useGeneratedKeys="true">
-        insert into role(role_name, role_tag, role_sort, status, del_flag, create_by, create_time, update_by, update_time)
+        insert into roles(role_name, role_tag, role_sort, status, del_flag, create_by, create_time, update_by, update_time)
         values (#{roleName}, #{roleTag}, #{roleSort}, #{status}, #{delFlag}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime})
     </insert>
 
     <insert id="insertBatch" keyProperty="roleId" useGeneratedKeys="true">
-        insert into role(role_name, role_tag, role_sort, status, del_flag, create_by, create_time, update_by, update_time)
+        insert into roles(role_name, role_tag, role_sort, status, del_flag, create_by, create_time, update_by, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
         (#{entity.roleName}, #{entity.roleTag}, #{entity.roleSort}, #{entity.status}, #{entity.delFlag}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime})
@@ -116,7 +116,7 @@
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="roleId" useGeneratedKeys="true">
-        insert into role(role_name, role_tag, role_sort, status, del_flag, create_by, create_time, update_by, update_time)
+        insert into roles(role_name, role_tag, role_sort, status, del_flag, create_by, create_time, update_by, update_time)
         values
         <foreach collection="entities" item="entity" separator=",">
             (#{entity.roleName}, #{entity.roleTag}, #{entity.roleSort}, #{entity.status}, #{entity.delFlag}, #{entity.createBy}, #{entity.createTime}, #{entity.updateBy}, #{entity.updateTime})
@@ -135,7 +135,7 @@
 
     <!--通过主键修改数据-->
     <update id="update">
-        update role
+        update roles
         <set>
             <if test="roleName != null and roleName != ''">
                 role_name = #{roleName},
@@ -170,7 +170,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from role where role_id = #{roleId}
+        delete from roles where role_id = #{roleId}
     </delete>
 
 </mapper>

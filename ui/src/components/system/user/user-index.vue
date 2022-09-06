@@ -10,7 +10,14 @@
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form-item>
   </el-form>
-
+  <el-row>
+    <el-button :icon="Search" circle />
+    <el-button v-hasRole="['admin']" type="primary" :icon="Edit" circle  />
+    <el-button type="success" :icon="Check" circle />
+    <el-button type="info" :icon="Message" circle />
+    <el-button type="warning" :icon="Star" circle />
+    <el-button type="danger" :icon="Delete" circle />
+  </el-row>
   <el-table ref="tableRef" row-key="userName" :data="tableData" style="width: 100%;">
     <el-table-column prop="userName" label="用户名" width="180"/>
     <el-table-column prop="nickName" label="昵称" width="180"/>
@@ -24,6 +31,14 @@
 import {ref} from "vue";
 import {listUser} from "@/api/user";
 import {onMounted} from "vue";
+import {
+  Check,
+  Delete,
+  Edit,
+  Message,
+  Search,
+  Star,
+} from '@element-plus/icons-vue'
 
 const queryParam=ref({
     size :2,
