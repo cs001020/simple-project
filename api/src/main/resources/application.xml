@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -11,7 +12,7 @@
        http://www.springframework.org/schema/tx
        https://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc
-       https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
     <!-- 自动扫包 -->
     <context:component-scan base-package="com.chen"/>
 <!--    切面-->
@@ -66,6 +67,11 @@
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/login"/>
             <bean class="com.chen.intercept.LoginIntercept"/>
+        </mvc:interceptor>
+<!--        重复求情拦截器-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.chen.intercept.RepeatSubmitInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
@@ -133,4 +139,7 @@
         <property name="minIdle" value="30"/>
         <property name="maxTotal" value="100"/>
     </bean>
+<!--    开启异步任务-->
+   <task:annotation-driven executor="chen_logger"/>
+    <task:executor id="chen_logger" pool-size="10-20" keep-alive="120" rejection-policy="ABORT" queue-capacity="100"/>
 </beans>

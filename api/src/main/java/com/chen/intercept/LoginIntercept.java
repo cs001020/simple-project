@@ -51,7 +51,7 @@ public class LoginIntercept implements HandlerInterceptor {
             return false;
         }
         //续命
-        redisTemplate.expire(Constant.TOKEN_KEY+token,Constant.TOKEN_TIME);
+        redisTemplate.expire(key,Constant.TOKEN_TIME);
         return true;
     }
 }

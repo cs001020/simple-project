@@ -55,7 +55,8 @@ public class OperLogController {
      */
     @PostMapping
     public ResponseEntity<OperLog> add(OperLog operLog) {
-        return ResponseEntity.ok(this.operLogService.insert(operLog));
+        operLogService.insert(operLog);
+        return ResponseEntity.ok(operLog);
     }
 
     /**

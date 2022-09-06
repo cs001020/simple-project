@@ -1,6 +1,8 @@
 package com.chen.controller;
 
+import com.chen.annotation.Log;
 import com.chen.annotation.Permissions;
+import com.chen.annotation.Repeat;
 import com.chen.annotation.Roles;
 import com.chen.entity.User;
 import com.chen.service.UserService;
@@ -35,6 +37,8 @@ public class UserController {
      * @return 查询结果
      */
     @GetMapping
+    @Log(title = "查询用户",businessType = "用户操作")
+    @Repeat(1)
     public ResponseEntity<Page<User>> queryByPage(User user) {
         return ResponseEntity.ok(this.userService.queryByPage(user,PageRequest.of(user.getPage(),user.getSize())));
     }
@@ -63,6 +67,7 @@ public class UserController {
      * @return 新增结果
      */
     @PostMapping
+    @Log(title="创建用户",businessType="用户操作")
     public ResponseEntity<User> add(User user) {
         return ResponseEntity.ok(this.userService.insert(user));
     }

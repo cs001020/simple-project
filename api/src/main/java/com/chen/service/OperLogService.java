@@ -35,7 +35,7 @@ public interface OperLogService {
      * @param operLog 实例对象
      * @return 实例对象
      */
-    OperLog insert(OperLog operLog);
+    void insert(OperLog operLog);
 
     /**
      * 修改数据

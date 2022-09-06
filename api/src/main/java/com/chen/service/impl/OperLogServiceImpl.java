@@ -3,6 +3,7 @@ package com.chen.service.impl;
 import com.chen.entity.OperLog;
 import com.chen.mapper.OperLogDao;
 import com.chen.service.OperLogService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -49,12 +50,12 @@ public class OperLogServiceImpl implements OperLogService {
      * 新增数据
      *
      * @param operLog 实例对象
-     * @return 实例对象
      */
     @Override
-    public OperLog insert(OperLog operLog) {
+    @Async("chen_logger")
+    public void insert(OperLog operLog) {
+        System.out.println("log____________"+Thread.currentThread().getName());
         this.operLogDao.insert(operLog);
-        return operLog;
     }
 
     /**
