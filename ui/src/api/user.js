@@ -44,3 +44,29 @@ export function getInfo() {
         method: 'get',
     })
 }
+export function addUser(data) {
+    return request({
+        url: '/user',
+        method: 'post',
+        data:data
+    })
+}
+export function getUserById(id) {
+    return request({
+        url: '/user/'+id,
+        method: 'get',
+    })
+}
+export function editUser(data) {
+    return request({
+        url: '/user',
+        method: 'put',
+        data:data
+    })
+}
+export function delUser(userId) {
+    return request({
+        url: '/user/'+userId,
+        method: 'delete',
+    })
+}

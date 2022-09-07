@@ -6,12 +6,16 @@ import com.chen.annotation.Repeat;
 import com.chen.annotation.Roles;
 import com.chen.entity.User;
 import com.chen.service.UserService;
+import com.chen.util.AuthUtil;
+import com.chen.util.DeleteFlagEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +72,13 @@ public class UserController {
      */
     @PostMapping
     @Log(title="创建用户",businessType="用户操作")
-    public ResponseEntity<User> add(User user) {
+    public ResponseEntity<User> add(@RequestBody User user, HttpServletRequest request) {
+        user.setLoginIp(request.getRemoteHost());
+        user.setCreateTime(new Date());
+        user.setCreateBy("admin");
+        user.setStatus("");
+        user.setDelFlag(DeleteFlagEnum.NO.getValue());
+
         return ResponseEntity.ok(this.userService.insert(user));
     }
 
@@ -79,7 +89,7 @@ public class UserController {
      * @return 编辑结果
      */
     @PutMapping
-    public ResponseEntity<User> edit(User user) {
+    public ResponseEntity<User> edit(@RequestBody User user) {
         return ResponseEntity.ok(this.userService.update(user));
     }
 
@@ -89,8 +99,8 @@ public class UserController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Long id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> deleteById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.userService.deleteById(id));
     }
 
