@@ -22,7 +22,7 @@
     <el-table-column prop="userName" label="用户名" width="180"/>
     <el-table-column prop="nickName" label="昵称" width="180"/>
     <el-table-column prop="email" label="邮箱"/>
-    <el-table-column label="Operations">
+    <el-table-column label="操作">
       <template #default="scope">
         <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
         >编辑</el-button

@@ -19,7 +19,7 @@
         <spring-data-commons.version>2.7.2</spring-data-commons.version>
         <aspectjweaver.version>1.9.9.1</aspectjweaver.version>
         <lombok.version>1.18.24</lombok.version>
-        <jackson.version>2.13.3</jackson.version>
+        <jackson.version>2.13.4</jackson.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <hibernate-validator>5.2.5.Final</hibernate-validator>
         <logback-classic.version>1.2.11</logback-classic.version>
